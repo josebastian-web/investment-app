@@ -1,5 +1,5 @@
 <template>
-  <DashboardLayout />
+  <DashboardLayout class="my-app-dark" />
 </template>
 
 <script setup lang="ts">

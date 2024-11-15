@@ -1,20 +1,20 @@
 <template>
-  <div class="bg-black text-white">
-    <Header />
+  <div class="p-4">
+    <SearchBar :list="constituensList" />
     <div class="flex">
       <div class="flex-initial w-2/3">
-        <Chart />
+        <Header :detail="getSelectedSummary" />
+        <Chart :history="getSelectedChart" />
       </div>
       <div class="flex-initial w-1/3">
-        <Summary />
+        <Summary :detail="getSelectedSummary" />
       </div>
     </div>
     <div class="flex">
       <div class="flex-initial w-full">
-        <Tab />
+        <Tab :favoriteInstruments="getFavoriteInstruments" />
         <div class="grid gap-4 grid-cols-2">
-          <InstrumentList />
-          <InstrumentList />
+          <InstrumentList :list="constituensList" />
         </div>
       </div>
     </div>
@@ -22,5 +22,19 @@
 </template>
 
 <script setup lang="ts">
-import { Chart, Summary, Header, Tab, InstrumentList } from '@/components'
+import { onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
+import { Chart, Summary, Header, Tab, InstrumentList, SearchBar } from '@/components'
+import { useInvestmentStore } from '@/stores/investments.ts'
+
+const useStore = useInvestmentStore()
+
+const { constituensList, getSelectedChart, getSelectedSummary, getFavoriteInstruments } =
+  storeToRefs(useStore)
+
+onMounted(() => {
+  useStore.setConstituenList()
+  useStore.setSelectedConstituenChart('IPSA')
+  useStore.setSelectedConstituenSummary('IPSA')
+})
 </script>
